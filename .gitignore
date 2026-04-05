@@ -1,0 +1,13 @@
+appsettings.json
+appsettings.Development.json
+**/tar
+**/bin
+**/obj
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+=======
+**/sql-22-12-2022.tar
+>>>>>>> Stashed changes
+=======
+
+
