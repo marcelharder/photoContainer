@@ -5,7 +5,7 @@ public interface IDapperCategoryService
         public Task<PagedList<ImageDto>?> GetImagesByCategory(ImageParams ip);
 
         public Task<PagedList<ImageDto>?> GetFilesForUser(ImageParams ip);
-        public Task<PagedList<CategoryDto>?> GetAllowedCategories(List<int> test, CategoryParams cp);
+        public Task<PagedList<CategoryDto>?> GetAllowedCategories(CategoryParams cp);
         public Task<CategoryDto?> GetSpecificCategory(int id);
         public Task UpdateCategory(Category up);
         public Task DeleteCategory(int id);

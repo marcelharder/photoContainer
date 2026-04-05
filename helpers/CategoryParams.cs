@@ -13,6 +13,6 @@ public class CategoryParams
         public int Id { get; set; } 
 
         public int userId { get; set; }
-        public required List<int> AllowedCategories { get; set; }
+        public required int[] AllowedCategories { get; set; }
         public required int Category { get; set; } 
     }

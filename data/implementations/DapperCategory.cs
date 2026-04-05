@@ -74,22 +74,22 @@ public class Dappercategory : IDapperCategoryService
         return PagedList<CategoryDto>.CreateAsync(documents, cp.PageNumber, cp.PageSize);
     }
 
-    public async Task<PagedList<CategoryDto>?> GetAllowedCategories(
-        List<int> test,
-        CategoryParams cp
-    )
+    public async Task<PagedList<CategoryDto>?> GetAllowedCategories(CategoryParams cp)
     {
+
+        var _result = new List<CategoryDto>();
+        
         var query = "Select * FROM Categories";
         using var connection = _context.CreateConnection();
         var documents = await connection.QueryAsync<CategoryDto>(query);
         var allCategories = documents.ToList();
-        var _result = new List<CategoryDto>();
+        
         foreach (CategoryDto cat in allCategories)
         {
             if (cat.Description != null)
             {
                 var id = cat.Id;
-                if (test.Contains((int)id))
+                if (cp.AllowedCategories.Contains((int)id))
                 {
                     var help = new CategoryDto
                     {
@@ -102,7 +102,7 @@ public class Dappercategory : IDapperCategoryService
                     _result.Add(help);
                 }
                 // sort op year
-                // _result = _result.OrderBy(o => o.YearTaken).ToList();
+                 _result = _result.OrderBy(o => o.YearTaken).ToList();
           }
         }
         return PagedList<CategoryDto>.CreateAsync(_result, cp.PageNumber, cp.PageSize);
@@ -156,32 +156,25 @@ public class Dappercategory : IDapperCategoryService
 
     public async Task<int> AddImage(ImageDto test)
     {
-        await Task.Run(() =>
-        {
-            var query =
-                "INSERT INTO Images (Id,ImageUrl,YearTaken,Location,Familie,Category,Series,Quality,Spare1,Spare2,Spare3)"
-                + "VALUES(@Id,@ImageUrl,@YearTaken,@Location,@Familie,@Category,@Series,@Quality,@Spare1,@Spare2,@Spare3)";
+        var query =
+            "INSERT INTO Images (Id,ImageUrl,YearTaken,Location,Familie,Category,Series,Quality,Spare1,Spare2,Spare3)"
+            + "VALUES(@Id,@ImageUrl,@YearTaken,@Location,@Familie,@Category,@Series,@Quality,@Spare1,@Spare2,@Spare3)";
 
-            var parameters = new DynamicParameters();
+        var parameters = new DynamicParameters();
+        parameters.Add("Id", test.Id, DbType.Int32);
+        parameters.Add("ImageUrl", test.ImageUrl, DbType.String);
+        parameters.Add("YearTaken", 1955, DbType.Int32);
+        parameters.Add("Location", test.Location, DbType.String);
+        parameters.Add("Familie", "n/a", DbType.String);
+        parameters.Add("Category", test.Category, DbType.Int32);
+        parameters.Add("Series", "n/a", DbType.String);
+        parameters.Add("Quality", "n/a", DbType.String);
+        parameters.Add("Spare1", "n/a", DbType.String);
+        parameters.Add("Spare2", "n/a", DbType.String);
+        parameters.Add("Spare3", "n/a", DbType.String);
 
-            parameters.Add("Id", test.Id, DbType.Int32);
-            parameters.Add("ImageUrl", test.ImageUrl, DbType.String);
-            parameters.Add("YearTaken", 1955, DbType.Int32);
-            parameters.Add("Location", test.Location, DbType.String);
-            parameters.Add("Familie", "n/a", DbType.String);
-            parameters.Add("Category", test.Category, DbType.Int32);
-            parameters.Add("Series", "n/a", DbType.String);
-            parameters.Add("Quality", "n/a", DbType.String);
-            parameters.Add("Spare1", "n/a", DbType.String);
-            parameters.Add("Spare2", "n/a", DbType.String);
-            parameters.Add("Spare3", "n/a", DbType.String);
-
-            using (var connection = _context.CreateConnection())
-            {
-                var id = connection.Execute(query, parameters);
-            }
-        });
-        return 1;
+        using var connection = _context.CreateConnection();
+        return await connection.ExecuteAsync(query, parameters);
     }
 
     public async Task<PagedList<ImageDto>?> GetFilesForUser(ImageParams ip)

@@ -91,12 +91,8 @@ public class ImageImplementation : IImage
 
     public async Task<int> updateImage(ImageDto imagedto)
     {
-        await Task.Run(() =>
-        {
-            _context.Images.Update(_mapper.Map<photoContainer.data.models.Image>(imagedto));
-        });
-
-        return 1;
+        _context.Images.Update(_mapper.Map<photoContainer.data.models.Image>(imagedto));
+        return await Task.FromResult(1);
     }
 
     public async Task<bool> SaveChangesAsync()

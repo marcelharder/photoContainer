@@ -8,12 +8,10 @@ AppSettings.Initialize(builder.Configuration);
 // Add services to the container.
 builder.Services.AddHttpClient();
 builder.Services.AddApplicationServices(builder.Configuration);
-builder.Services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.PropertyNamingPolicy = null; });
 builder.Services.AddCors();
 builder.Services.Configure<ComSettings>(builder.Configuration.GetSection("ComSettings"));
 
-
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.PropertyNamingPolicy = null; });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

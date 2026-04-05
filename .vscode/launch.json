@@ -7,9 +7,14 @@
         },
         {
             "name": "C#: photoContainer Debug",
-            "type": "dotnet",
+            "type": "coreclr",
             "request": "launch",
-            "projectPath": "${workspaceFolder}/photoContainer/photoContainer.csproj"
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/bin/Debug/net9.0/photoContainer.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "internalConsole"
         }
     ]
 }
