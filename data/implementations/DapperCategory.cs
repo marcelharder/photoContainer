@@ -76,35 +76,49 @@ public class Dappercategory : IDapperCategoryService
 
     public async Task<PagedList<CategoryDto>?> GetAllowedCategories(CategoryParams cp)
     {
-
         var _result = new List<CategoryDto>();
-        
-        var query = "Select * FROM Categories";
-        using var connection = _context.CreateConnection();
-        var documents = await connection.QueryAsync<CategoryDto>(query);
-        var allCategories = documents.ToList();
-        
-        foreach (CategoryDto cat in allCategories)
+
+        foreach (int cat in cp.AllowedCategories)
         {
-            if (cat.Description != null)
-            {
-                var id = cat.Id;
-                if (cp.AllowedCategories.Contains((int)id))
-                {
-                    var help = new CategoryDto
-                    {
-                        Id = id,
-                        Description = cat.Description,
-                        MainPhoto = cat.MainPhoto,
-                        Number_of_images = 0,
-                        YearTaken = cat.YearTaken
-                    };
-                    _result.Add(help);
-                }
-                // sort op year
-                 _result = _result.OrderBy(o => o.YearTaken).ToList();
-          }
+            GetSpecificCategory(cat).ContinueWith(task =>
+             {
+                 var category = task.Result;
+                 if (category != null)
+                 {
+                     _result.Add(category);
+                 }
+             }).Wait();
         }
+
+        /*   var query = "Select * FROM Categories";
+          using var connection = _context.CreateConnection();
+          var documents = await connection.QueryAsync<CategoryDto>(query);
+          var allCategories = documents.ToList();
+
+          foreach (CategoryDto cat in allCategories)
+          {
+              if (cat.Description != null)
+              {
+                  var id = cat.Id;
+                  if (cp.AllowedCategories.Contains((int)id))
+                  {
+                      var help = new CategoryDto
+                      {
+                          Id = id,
+                          Description = cat.Description,
+                          MainPhoto = cat.MainPhoto,
+                          Number_of_images = 0,
+                          YearTaken = cat.YearTaken
+                      };
+                      _result.Add(help);
+                  }
+                  // sort op year
+                   _result = _result.OrderBy(o => o.YearTaken).ToList();
+            }
+          }
+           */
+
+
         return PagedList<CategoryDto>.CreateAsync(_result, cp.PageNumber, cp.PageSize);
     }
 
@@ -203,7 +217,6 @@ public class Dappercategory : IDapperCategoryService
                 Spare3 = img.Spare3,
                 Spare4 = transformToStringArray(img.Spare1)
             };
-
             if (help.Spare4 != null)
             {
                 if (help.Spare4.Contains(ip.Id.ToString())) { _result.Add(help); }

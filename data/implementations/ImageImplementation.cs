@@ -16,10 +16,8 @@ public class ImageImplementation : IImage
         IHttpContextAccessor ht
         )
     {
-
         _mapper = mapper;
         _context = context;
-
         _ht = ht;
         _dap = dap;
         _conf = conf;
@@ -75,6 +73,7 @@ public class ImageImplementation : IImage
             return new List<ImageDto>();
         }
     }
+    
     public async Task<int> deleteImage(int id)
     {
         var selectedImage = await _context.Images.FirstOrDefaultAsync(x => x.Id == id);
