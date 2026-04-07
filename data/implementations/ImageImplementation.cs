@@ -213,7 +213,7 @@ public class ImageImplementation : IImage
             .Where(img =>
             {
                 var tags = TransformToStringArray(img.Spare1);
-                return tags != null && tags.Contains(ip.Id.ToString());
+                return tags != null && tags.Contains(ip.userId.ToString());
             })
             .ToList();
 
