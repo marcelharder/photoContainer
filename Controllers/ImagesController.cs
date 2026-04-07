@@ -7,7 +7,7 @@ public class ImagesController : BaseApiController
 {
     private readonly IImage _image;
     private readonly IMapper _mapper;
-    private readonly ICategory _category;
+    private readonly  ICategory _category;
     private readonly IConfiguration _conf;
 
     public ImagesController(IImage image, IMapper mapper, IConfiguration conf, ICategory category)
@@ -15,6 +15,7 @@ public class ImagesController : BaseApiController
         _image = image;
         _mapper = mapper;
         _conf = conf;
+        _category = category;
     }
 
     //get a Paged list of images per Category
@@ -98,7 +99,7 @@ public class ImagesController : BaseApiController
     {
         // the seeding of the images is done here
         await _image.SeedImages();
-        await _image.UpdateCategories();
+        await _category.UpdateCategories();
         return Ok();
     }
 

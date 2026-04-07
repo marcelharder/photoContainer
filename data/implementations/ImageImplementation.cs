@@ -269,34 +269,10 @@ public class ImageImplementation : IImage
                 //addImage(catList[x],counter,url,_dapper);
             }
         }
-
-        return;
+    return;
     }
 
-    public async Task UpdateCategories()
-    {
-
-        // fill a list with the id of the first image of each category
-        List<int> listOfIds = new List<int>();
-        var counter = 0;
-
-        var allCategories = await _context.Categories.ToListAsync();
-        foreach (Category cat in allCategories)
-        {
-            var images = _context.Images.Where(global => global.Category == cat.Id).ToList();
-            listOfIds.Add(images[0].Id);
-        }
-
-        // with this list update the Categories
-        foreach (Category cat in allCategories)
-        {
-            cat.MainPhoto = listOfIds[counter];
-            _context.Categories.Update(cat);
-            await _context.SaveChangesAsync();
-            counter++;
-        }
-        //  var allImages = await context.Images.ToListAsync();
-    }
+  
     public async Task<PagedList<ImageDto>?> GetImagesByCategory(ImageParams ip)
     {
         var categoryId = ip.Category;

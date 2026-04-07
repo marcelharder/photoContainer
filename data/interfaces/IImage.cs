@@ -14,5 +14,5 @@ public interface IImage
     Task<ImageDto> findImage(int Id);
     Task<ActionResult<List<ImageDto>>> findImagesByUser(List<int> catP);
     Task<bool> SaveChangesAsync();
-    Task UpdateCategories();
+   
 }

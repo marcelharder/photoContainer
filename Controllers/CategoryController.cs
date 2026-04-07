@@ -2,12 +2,19 @@ namespace api.Controllers;
 
 public class CategoryController : BaseApiController
 {
-    private readonly IDapperCategoryService _cat;
+    
+private readonly ICategory _cat;
 
-
-    public CategoryController(IDapperCategoryService cat)
+    public CategoryController(ICategory cat)
     {
         _cat = cat;
+    }
+
+    [HttpGet("getCategories")]
+    public async Task<IActionResult> GetCategories()
+    {
+        var result = await _cat.getCategories();
+        return Ok(result);
     }
 
 
