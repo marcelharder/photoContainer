@@ -20,23 +20,24 @@ var app = builder.Build();
 
 // initialize the database ...
 
-        using var scope = app.Services.CreateScope();
-        var services = scope.ServiceProvider;
-        try
-        {
-            var context = services.GetRequiredService<ApplicationDbContext>();
-            var dapper = services.GetRequiredService<DapperContext>();
-            var image = services.GetRequiredService<IImage>();
-            await context.Database.EnsureCreatedAsync();
-            await Seed.SeedCategories(context);
-            await Seed.SeedImages(context,image);
-            
-        }
-        catch (Exception ex)
-        {
-            var logger = services.GetRequiredService<ILogger<Program>>();
-            logger.LogError(ex, "An error occurred during migration");
-        }
+using var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
+try
+{
+    var context = services.GetRequiredService<ApplicationDbContext>();
+    var dapper = services.GetRequiredService<DapperContext>();
+    var image = services.GetRequiredService<IImage>();
+    var category = services.GetRequiredService<ICategory>();
+    await context.Database.EnsureCreatedAsync();
+    await Seed.SeedCategories(context);
+    await Seed.SeedImages(context, image, category);
+
+}
+catch (Exception ex)
+{
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "An error occurred during migration");
+}
 
 
 // Configure the HTTP request pipeline.
@@ -56,10 +57,10 @@ if (app.Environment.IsDevelopment())
     RequestPath = "/StaticFiles"
 });
  */
- app.UseCors(x => x.AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials()
-            .WithOrigins("http://localhost:4200"));
+app.UseCors(x => x.AllowAnyHeader()
+           .AllowAnyMethod()
+           .AllowCredentials()
+           .WithOrigins("http://localhost:4200"));
 
 app.UseRouting();
 app.UseAuthentication();

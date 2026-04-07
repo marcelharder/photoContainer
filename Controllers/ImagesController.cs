@@ -2,25 +2,19 @@ using IronSoftware.Drawing;
 using SixLabors.ImageSharp.Processing;
 
 namespace api.Controllers;
+
 public class ImagesController : BaseApiController
 {
     private readonly IImage _image;
     private readonly IMapper _mapper;
-    private readonly IDapperCategoryService _dapper;
-
+    private readonly ICategory _category;
     private readonly IConfiguration _conf;
 
-    public ImagesController(
-        IImage image,
-        IMapper mapper,
-        IConfiguration conf,
-        IDapperCategoryService dapper
-    )
+    public ImagesController(IImage image, IMapper mapper, IConfiguration conf, ICategory category)
     {
         _image = image;
         _mapper = mapper;
         _conf = conf;
-        _dapper = dapper;
     }
 
     //get a Paged list of images per Category
@@ -56,7 +50,7 @@ public class ImagesController : BaseApiController
 
             anyBitmap = image;
             var help = anyBitmap.ExportBytesAsJpg();
-           
+
             return File(help, "image/jpg");
         }
     }
@@ -74,7 +68,7 @@ public class ImagesController : BaseApiController
     [HttpGet("getImagesByCategory")]
     public async Task<ActionResult<PagedList<ImageDto>>> GetImagesByCat([FromQuery] ImageParams ip)
     {
-        var plImages = await _dapper.GetImagesByCategory(ip);
+        var plImages = await _image.GetImagesByCategory(ip);
         var test = new PaginationHeader(
             plImages!.CurrentPage,
             plImages!.PageSize,
@@ -86,9 +80,9 @@ public class ImagesController : BaseApiController
     }
 
     [HttpGet("getFilesForThisUser")]
-    public async Task<ActionResult<PagedList<ImageDto>>> GetImagesByUser([FromQuery] ImageParams ip)
+    public async Task<ActionResult<PagedList<ImageDto>>> GetImagesByUser([FromQuery] CategoryParams ip)
     {
-        var plImages = await _dapper.GetFilesForUser(ip);
+        var plImages = await _image.GetFilesForUser(ip);
         var test = new PaginationHeader(
             plImages!.CurrentPage,
             plImages!.PageSize,
@@ -103,7 +97,7 @@ public class ImagesController : BaseApiController
     public async Task<ActionResult<int>> AddImage()
     {
         // the seeding of the images is done here
-        await _dapper.SeedImages();
+        await _image.SeedImages();
         await _image.UpdateCategories();
         return Ok();
     }

@@ -7,7 +7,7 @@ public class CategoryDto
     public string? Name { get; set; }
     public string? MainPhoto { get; set; }
     public int? Number_of_images { get; set; }
-    public int? YearTaken {get; set;}
+    public int? YearTaken { get; set; }
 
-       
-    }
+
+}

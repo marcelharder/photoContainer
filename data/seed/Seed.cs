@@ -1,37 +1,32 @@
-using System.Text.Json;
-using Microsoft.EntityFrameworkCore;
-using photoContainer.data.models;
-
 namespace photoContainer.data.seed;
 
 public class Seed
 {
-  
     public static async Task SeedCategories(ApplicationDbContext context)
     {
         if (await context.Categories.AnyAsync())
             return;
-       
-       var counter = 1;
+
+        var counter = 1;
         var catData = await System.IO.File.ReadAllTextAsync("data/seed/CategoryData.json");
         var categories = JsonSerializer.Deserialize<List<Category>>(catData);
 
         if (categories != null)
         {
-            categories = categories.OrderBy(c => c.YearTaken).ToList();// ORDER BY Year
-            
-            foreach (Category im in categories) 
+            categories = categories.OrderBy(c => c.YearTaken).ToList(); // ORDER BY Year
+
+            foreach (Category im in categories)
             {
-                im.MainPhoto = counter;// set main photo
+                im.MainPhoto = counter; // set main photo
                 counter = counter + im.Number_of_images - 1;
-                im.Name = char.ToUpper(im.Name[0]) + im.Name.Substring(1);// MAKE FIRST CHARACTER A CAPITAL LETTER
-                _ = context.Categories.Add(im);// save image to database
+                im.Name = char.ToUpper(im.Name[0]) + im.Name.Substring(1); // MAKE FIRST CHARACTER A CAPITAL LETTER
+                _ = context.Categories.Add(im); // save image to database
             }
             await context.SaveChangesAsync();
         }
     }
 
-    public static async Task SeedImages(ApplicationDbContext context, IImage image)
+    public static async Task SeedImages(ApplicationDbContext context, IImage image, ICategory category)
     {
         var counter = 0;
         var catList = new List<Category>();
@@ -40,7 +35,7 @@ public class Seed
         if (await context.Images.AnyAsync())
             return;
 
-        catList = await image.getCategories();
+        catList = await category.getCategories();
 
         if (catList != null)
         {
@@ -76,6 +71,4 @@ public class Seed
             }
         }
     }
-
-   
 }

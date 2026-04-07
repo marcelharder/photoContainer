@@ -1,4 +1,5 @@
 namespace photoContainer.data.models;
+
 public class Image
 {
     [Key]

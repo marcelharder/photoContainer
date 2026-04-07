@@ -16,7 +16,7 @@ public static class AppSettings
         ConnectionString = _configuration.GetConnectionString("SQLConnection")
             ?? throw new InvalidOperationException("Connection string 'SQLConnection' not found.");
 
-         
+
     }
 
     public static string GetConnectionString()

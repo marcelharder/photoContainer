@@ -23,23 +23,68 @@ public class CategoryImplementation : ICategory
         _conf = conf;
     }
 
-    public Task<Category> CreateCategory(Category up)
+    public Task<CategoryDto> CreateCategory(Category up)
     {
         throw new NotImplementedException();
     }
 
-    public Task<List<Category>> GetAllCategories(CategoryParams cp)
+    public async Task<List<Category>> getCategories()
+    {
+        return await _context.Categories.ToListAsync();
+    }
+
+
+
+
+
+    public async Task<PagedList<CategoryDto>?> GetAllCategories(CategoryParams cp)
+    {
+        var query = "Select * FROM Categories";
+        using var connection = _dap.CreateConnection();
+        var documents = await connection.QueryAsync<CategoryDto>(query);
+
+        return PagedList<CategoryDto>.CreateAsync(documents, cp.PageNumber, cp.PageSize);
+    }
+
+    public async Task<PagedList<CategoryDto>?> GetAllowedCategories(CategoryParams cp)
+    {
+        var _result = new List<CategoryDto>();
+
+        foreach (int cat in cp.AllowedCategories)
+        {
+            GetSpecificCategory(cat)
+                .ContinueWith(task =>
+                {
+                    var category = task.Result;
+                    if (category != null)
+                    {
+                        _result.Add(category);
+                    }
+                })
+                .Wait();
+        }
+        return PagedList<CategoryDto>.CreateAsync(_result, cp.PageNumber, cp.PageSize);
+    }
+
+
+    public async Task<CategoryDto?> GetSpecificCategory(int id)
+    {
+        var query = "Select * FROM Categories WHERE Id = @id";
+        using (var connection = _dap.CreateConnection())
+        {
+            var document = await connection.QueryFirstOrDefaultAsync<CategoryDto>(
+                query,
+                new { id }
+            );
+
+            return document;
+        }
+    }
+
+    public Task UpdateCategory(Category up)
     {
         throw new NotImplementedException();
     }
 
-    public Task<List<Category>> GetAllowedCategories(CategoryParams cp)
-    {
-        throw new NotImplementedException();
-    }
 
-    public Task<Category> GetSpecificCategory(int category)
-    {
-        throw new NotImplementedException();
-    }
 }

@@ -9,6 +9,6 @@ public class Category
     public required string Description { get; set; }
     public required int MainPhoto { get; set; }
     public required int Number_of_images { get; set; }
-    public required int YearTaken {get; set;}
-    }
-  
+    public required int YearTaken { get; set; }
+}
+

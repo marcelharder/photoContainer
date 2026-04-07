@@ -1,8 +1,9 @@
 
 namespace photoContainer.data.dtos;
+
 public class ImageDto
 {
-    public string? Id {get; set;}      
+    public string? Id { get; set; }
     public string? ImageUrl { get; set; }
     public int YearTaken { get; set; }
     public string? Location { get; set; }
@@ -14,8 +15,8 @@ public class ImageDto
     public string? Spare2 { get; set; }
     public string? Spare3 { get; set; }
 
-    
-     public string[]? Spare4 { get; set; }
 
-   
+    public string[]? Spare4 { get; set; }
+
+
 }

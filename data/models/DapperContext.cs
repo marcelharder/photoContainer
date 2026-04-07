@@ -1,8 +1,8 @@
 namespace photoContainer.data.models;
 
-    public class DapperContext
-    {
-       
+public class DapperContext
+{
+
     private readonly IConfiguration _configuration;
     private readonly string? _connectionString;
 
@@ -12,7 +12,7 @@ namespace photoContainer.data.models;
         _connectionString = _configuration.GetConnectionString("SQLConnection");
     }
 
-     public IDbConnection CreateConnection()
-         => new MySqlConnection(_connectionString);
+    public IDbConnection CreateConnection()
+        => new MySqlConnection(_connectionString);
 
-    }
+}

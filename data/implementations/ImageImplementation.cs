@@ -73,7 +73,7 @@ public class ImageImplementation : IImage
             return new List<ImageDto>();
         }
     }
-    
+
     public async Task<int> deleteImage(int id)
     {
         var selectedImage = await _context.Images.FirstOrDefaultAsync(x => x.Id == id);
@@ -99,14 +99,30 @@ public class ImageImplementation : IImage
         return await _context.SaveChangesAsync() > 0;
     }
 
-    public async Task<int> addImage(ImageDto imDto)
+    public async Task<int> addImage(ImageDto test)
     {
-        var result = 1;
-        var img = _mapper.Map<photoContainer.data.models.Image>(imDto);
-        var help = _context.Images.Add(img);
-        await _context.SaveChangesAsync();
-        return result;
+        var query =
+            "INSERT INTO Images (Id,ImageUrl,YearTaken,Location,Familie,Category,Series,Quality,Spare1,Spare2,Spare3)"
+            + "VALUES(@Id,@ImageUrl,@YearTaken,@Location,@Familie,@Category,@Series,@Quality,@Spare1,@Spare2,@Spare3)";
+
+        var parameters = new DynamicParameters();
+        parameters.Add("Id", test.Id, DbType.Int32);
+        parameters.Add("ImageUrl", test.ImageUrl, DbType.String);
+        parameters.Add("YearTaken", 1955, DbType.Int32);
+        parameters.Add("Location", test.Location, DbType.String);
+        parameters.Add("Familie", "n/a", DbType.String);
+        parameters.Add("Category", test.Category, DbType.Int32);
+        parameters.Add("Series", "n/a", DbType.String);
+        parameters.Add("Quality", "n/a", DbType.String);
+        parameters.Add("Spare1", "n/a", DbType.String);
+        parameters.Add("Spare2", "n/a", DbType.String);
+        parameters.Add("Spare3", "n/a", DbType.String);
+
+        using var connection = _dap.CreateConnection();
+        return await connection.ExecuteAsync(query, parameters);
     }
+
+   
 
     public async Task<ActionResult<CarouselDto>> getCarouselData(int id)
     {
@@ -167,10 +183,52 @@ public class ImageImplementation : IImage
         return null;
     }
 
-    public async Task<List<Category>> getCategories()
+    public async Task<PagedList<ImageDto>?> GetFilesForUser(CategoryParams ip)
     {
-        return await _context.Categories.ToListAsync();
+        var allowedCategories = await GetAllowedCategories(ip);
+
+        if (allowedCategories == null || !allowedCategories.Any())
+            return PagedList<ImageDto>.CreateAsync(
+                new List<ImageDto>(),
+                ip.PageNumber,
+                ip.PageSize
+            );
+
+        var categoryIds = allowedCategories.Select(c => c.Id).ToArray();
+
+        using var connection = _dap.CreateConnection();
+
+        var query =
+            @"
+        SELECT *
+        FROM Images
+        WHERE Category IN @categoryIds";
+
+        var documents = await connection.QueryAsync<ImageDto>(query, new { categoryIds });
+
+        var filtered = documents
+            .Where(img =>
+            {
+                var tags = TransformToStringArray(img.Spare1);
+                return tags != null && tags.Contains(ip.Id.ToString());
+            })
+            .ToList();
+
+        return PagedList<ImageDto>.CreateAsync(filtered, ip.PageNumber, ip.PageSize);
     }
+
+    public string[]? TransformToStringArray(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return null;
+
+        return value
+            .Split(',', StringSplitOptions.RemoveEmptyEntries)
+            .Select(x => x.Trim())
+            .ToArray();
+    }
+
+
 
     public async Task SeedImages()
     {
@@ -236,5 +294,35 @@ public class ImageImplementation : IImage
         }
         //  var allImages = await context.Images.ToListAsync();
     }
+    public async Task<PagedList<ImageDto>?> GetImagesByCategory(ImageParams ip)
+    {
+        var categoryId = ip.Category;
+        var query = "Select * FROM Images Where Category = @categoryId";
+        /// select correct category
+        using var connection = _dap.CreateConnection();
+        var documents = await connection.QueryAsync<ImageDto>(query, new { categoryId });
+        var selectedImages = documents.ToList();
+        var _result = new List<ImageDto>();
+        foreach (ImageDto img in selectedImages)
+        {
+            var help = new ImageDto
+            {
+                Id = img.Id,
+                ImageUrl = img.ImageUrl,
+                YearTaken = img.YearTaken,
+                Location = img.Location,
+                Familie = img.Familie,
+                Category = categoryId,
+                Quality = img.Quality,
+                Series = img.Series,
+                Spare1 = img.Spare1,
+                Spare2 = img.Spare2,
+                Spare3 = img.Spare3
+            };
+            _result.Add(help);
+        }
+        return PagedList<ImageDto>.CreateAsync(_result, ip.PageNumber, ip.PageSize);
+    }
+
 
 }
