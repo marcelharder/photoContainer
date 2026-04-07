@@ -26,8 +26,7 @@ public static class ApplicationServicesExtensions
         services.AddScoped<ComSettings>();
         services.AddScoped<IImage, ImageImplementation>();
         services.AddScoped<ICategory, CategoryImplementation>();
-        services.AddScoped<IDapperCategoryService, Dappercategory>();
-
+      
         services.AddAutoMapper(cfg =>
         {
             cfg.LicenseKey =

@@ -4,6 +4,7 @@ public class ImageImplementation : IImage
 {
     private ApplicationDbContext _context;
     private DapperContext _dap;
+    private ICategory _category;
     private IHttpContextAccessor _ht;
     private readonly IMapper _mapper;
     private readonly IConfiguration _conf;
@@ -13,6 +14,7 @@ public class ImageImplementation : IImage
         DapperContext dap,
         ApplicationDbContext context,
         IMapper mapper,
+        ICategory category, 
         IHttpContextAccessor ht
         )
     {
@@ -21,6 +23,7 @@ public class ImageImplementation : IImage
         _ht = ht;
         _dap = dap;
         _conf = conf;
+        _category = category;
     }
 
     public async Task<PagedList<ImageDto>> getImages(ImageParams imgP)
@@ -185,7 +188,7 @@ public class ImageImplementation : IImage
 
     public async Task<PagedList<ImageDto>?> GetFilesForUser(CategoryParams ip)
     {
-        var allowedCategories = await GetAllowedCategories(ip);
+        var allowedCategories = await _category.GetAllowedCategories(ip);
 
         if (allowedCategories == null || !allowedCategories.Any())
             return PagedList<ImageDto>.CreateAsync(
