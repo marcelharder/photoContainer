@@ -104,7 +104,15 @@ public class ImageImplementation : IImage
 
     public async Task<int> addImage(ImageDto test)
     {
-        var query =
+        _context.Images.Add(_mapper.Map<photoContainer.data.models.Image>(test));
+        return await Task.FromResult(1);
+
+
+
+
+
+
+      /*   var query =
             "INSERT INTO Images (Id,ImageUrl,YearTaken,Location,Familie,Category,Series,Quality,Spare1,Spare2,Spare3)"
             + "VALUES(@Id,@ImageUrl,@YearTaken,@Location,@Familie,@Category,@Series,@Quality,@Spare1,@Spare2,@Spare3)";
 
@@ -122,7 +130,7 @@ public class ImageImplementation : IImage
         parameters.Add("Spare3", "n/a", DbType.String);
 
         using var connection = _dap.CreateConnection();
-        return await connection.ExecuteAsync(query, parameters);
+        return await connection.ExecuteAsync(query, parameters); */
     }
 
    
@@ -233,7 +241,7 @@ public class ImageImplementation : IImage
 
 
 
-    public async Task SeedImages()
+   /*  public async Task SeedImages()
     {
         var counter = 0;
         var catList = _context.Categories.AsList();
@@ -270,7 +278,7 @@ public class ImageImplementation : IImage
             }
         }
     return;
-    }
+    } */
 
   
     public async Task<PagedList<ImageDto>?> GetImagesByCategory(ImageParams ip)

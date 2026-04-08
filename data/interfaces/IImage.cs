@@ -9,7 +9,7 @@ public interface IImage
 
     Task<int> addImage(ImageDto imdto);
     Task<int> deleteImage(int id);
-    Task SeedImages();
+    //Task SeedImages();
     Task<int> updateImage(ImageDto image);
     Task<ImageDto> findImage(int Id);
     Task<ActionResult<List<ImageDto>>> findImagesByUser(List<int> catP);

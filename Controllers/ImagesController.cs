@@ -95,13 +95,16 @@ public class ImagesController : BaseApiController
     }
 
     [HttpPost("addImage")]
-    public async Task<ActionResult<int>> AddImage()
+    public async Task<ActionResult<string>> AddImage([FromBody] ImageDto imagedto)
     {
-        // the seeding of the images is done here
-        await _image.SeedImages();
-        await _category.UpdateCategories();
-        return Ok();
+        var result = await _image.addImage(imagedto);
+        if (await _image.SaveChangesAsync())
+        {
+            return Ok("Image added");
+        }
+        return BadRequest("Image was not added");
     }
+    
 
     [HttpDelete("deleteImage/{id}")]
     public async Task<ActionResult<int>> DeleteImage(int id)
@@ -120,7 +123,7 @@ public class ImagesController : BaseApiController
         var result = await _image.updateImage(imagedto);
         if (await _image.SaveChangesAsync())
         {
-            return Ok();
+            return Ok("Image updated");
         }
         return BadRequest("Image was not updated");
     }
