@@ -80,8 +80,8 @@ public class ImagesController : BaseApiController
         return Ok(plImages);
     }
 
-    [HttpGet("getFilesForThisUser")]
-    public async Task<ActionResult<PagedList<ImageDto>>> GetImagesByUser([FromQuery] CategoryParams ip)
+    [HttpPost("getFilesForThisUser")]
+    public async Task<ActionResult<PagedList<ImageDto>>> GetImagesByUser([FromBody] CategoryParams ip)
     {
         var plImages = await _image.GetFilesForUser(ip);
         var test = new PaginationHeader(
@@ -131,13 +131,7 @@ public class ImagesController : BaseApiController
         return await _image.findImage(Id);
     }
 
-    [HttpGet("addImage")]
-    public async Task<ActionResult<ImageDto>> FindtwoImage(int Id)
-    {
-        return await _image.findImage(Id);
-    }
-
-    [HttpGet("getCarousel/{Id}")]
+   [HttpGet("getCarousel/{Id}")]
     public async Task<ActionResult<CarouselDto>> getCarousel(int Id)
     {
         return await _image.getCarouselData(Id);

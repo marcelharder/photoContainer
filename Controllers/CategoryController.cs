@@ -17,7 +17,6 @@ private readonly ICategory _cat;
         return Ok(result);
     }
 
-
     [HttpPost("getAllCategories")]
     public async Task<IActionResult> Categories([FromBody] CategoryParams cp)
     {
