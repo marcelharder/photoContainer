@@ -26,49 +26,67 @@ public class Seed
         }
     }
 
-    public static async Task SeedImages(ApplicationDbContext context, IImage image, ICategory category)
+    public static async Task SeedImages(ApplicationDbContext context, IImage image, ICategory categoryService)
     {
-        var counter = 0;
-        var catList = new List<Category>();
-        ImageDto test;
-
         if (await context.Images.AnyAsync())
             return;
 
-        catList = await category.getCategories();
+        var categories = await categoryService.getCategories();
 
-        if (catList != null)
+        if (categories == null || categories.Count == 0)
+            return;
+
+        var images = new List<models.Image>();
+
+        //string nasRoot = @"\\192.168.2.22\photoproject\fotos"; // replace "photos" with your Synology share name
+
+        foreach (var category in categories)
         {
-            for (int x = 0; x < catList.Count; x++)
+
+            var segments = category.Name.Split(new[] { '/','\\'}, StringSplitOptions.RemoveEmptyEntries);
+
+            var directoryPath = Path.Combine(new[] {"/nfs/fotoproject/fotos"}.Concat(segments).ToArray());
+
+            if (!Directory.Exists(directoryPath))
+                continue;
+
+            int imageCount = 0;
+
+            try
             {
-                counter = 0;
-                if (catList[x].Number_of_images != 0)
-                {
-                    counter += (int)catList[x].Number_of_images;
-
-                    for (int y = 1; y < counter; y++)
-                    {
-                        string? url = catList[x].Name + "/" + y.ToString() + ".jpg";
-
-                        test = new ImageDto
-                        {
-                            //Id = x.ToString(),
-                            ImageUrl = url,
-                            YearTaken = 1995,
-                            Location = "",
-                            Familie = "",
-                            Category = catList[x].Id,
-                            Series = "",
-                            Spare1 = "",
-                            Spare2 = "",
-                            Spare3 = "",
-                        };
-                        await image.addImage(test);
-                    }
-                }
-
-                //addImage(catList[x],counter,url,_dapper);
+                imageCount = Directory.EnumerateFiles(directoryPath, "*.jpg", SearchOption.TopDirectoryOnly).Count();
             }
+            catch (UnauthorizedAccessException)
+            {
+                continue;
+            }
+            catch (IOException)
+            {
+                continue;
+            }
+
+            for (int i = 1; i <= imageCount; i++)
+            {
+                images.Add(new models.Image
+                {
+                    ImageUrl = $"{category.Name}/{i}.jpg",
+                    YearTaken = 1995,
+                    Location = string.Empty,
+                    Familie = string.Empty,
+                    Category = category.Id,
+                    Series = string.Empty,
+                    Spare1 = string.Empty,
+                    Spare2 = string.Empty,
+                    Spare3 = string.Empty
+                });
+            }
+        }
+
+        if (images.Count > 0)
+        {
+            await context.Images.AddRangeAsync(images);
+            await context.SaveChangesAsync();
         }
     }
 }
+

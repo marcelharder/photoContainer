@@ -87,6 +87,10 @@ helpers/
  ImageParams.cs
  PagedList.cs
  PaginationHeader.cs
+Migrations/
+ 20260408094732_Initial.cs
+ 20260408094732_Initial.Designer.cs
+ ApplicationDbContextModelSnapshot.cs
 obj/Debug/net9.0/
  .NETCoreApp,Version=v9.0.AssemblyAttributes.cs
  photoContainer.AssemblyInfo.cs

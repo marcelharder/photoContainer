@@ -1,0 +1,48 @@
+services:
+  db:
+    image: mariadb:12.2
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: example
+      MARIADB_DATABASE: foto
+      MARIADB_PASSWORD: example
+    networks:
+      - internal-container-network
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost", "-pexample"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  photoService:
+    image: marcel88/photocontainer:v1
+    restart: always
+    ports:
+      - "8120:8080"
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__SQLConnection: Server=db;Port=3306;Database=foto;User=root;Password=example;
+    networks:
+      - internal-container-network
+    volumes:
+      - myapp:/nfs/fotoproject/fotos
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  myapp:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=192.168.2.22,rw
+      device: ":/volume1/fotoproject/fotos"
+  mariadb-data:
+
+networks:
+  internal-container-network:
+    driver: bridge

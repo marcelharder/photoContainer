@@ -4,7 +4,7 @@ public class Image
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public required int Id { get; set; }
+    public int Id { get; set; }
     public required string ImageUrl { get; set; }
     public required int YearTaken { get; set; }
     public required string Location { get; set; }
