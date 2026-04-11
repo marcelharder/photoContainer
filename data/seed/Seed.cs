@@ -31,9 +31,9 @@ public class Seed
         if (await context.Images.AnyAsync())
             return;
 
-        var categories = await categoryService.getCategories();
+        var categories = await categoryService.GetAllCategories();
 
-        if (categories == null || categories.Count == 0)
+        if (categories == null || categories.Length == 0)
             return;
 
         var images = new List<models.Image>();
@@ -42,7 +42,8 @@ public class Seed
 
         foreach (var category in categories)
         {
-
+            if(category.Name == null)
+                continue;
             var segments = category.Name.Split(new[] { '/','\\'}, StringSplitOptions.RemoveEmptyEntries);
 
             var directoryPath = Path.Combine(new[] {"/nfs/fotoproject/fotos"}.Concat(segments).ToArray());
@@ -73,7 +74,7 @@ public class Seed
                     YearTaken = 1995,
                     Location = string.Empty,
                     Familie = string.Empty,
-                    Category = category.Id,
+                    Category = (int)category.Id,
                     Series = string.Empty,
                     Spare1 = string.Empty,
                     Spare2 = string.Empty,

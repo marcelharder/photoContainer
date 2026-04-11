@@ -18,29 +18,14 @@ public class ImagesController : BaseApiController
         _category = category;
     }
 
-    //get a Paged list of images per Category
-    [HttpGet("getImages")]
-    public async Task<ActionResult<PagedList<ImageDto>>> GetImages([FromQuery] ImageParams imgP)
-    {
-        var plImages = await _image.getImages(imgP);
-        Response.AddPaginationHeader(
-            new PaginationHeader(
-                plImages.CurrentPage,
-                plImages.PageSize,
-                plImages.TotalCount,
-                plImages.TotalPages
-            )
-        );
-        return Ok(plImages);
-    }
-
+  
     [HttpGet("getImageFile/{id}")]
     public async Task<IActionResult> getImageFile(int id)
     {
         var locationPrefix = _conf.GetValue<string>("NfsLocation");
         AnyBitmap anyBitmap;
 
-        var selectedImage = await _image.findImage(id);
+        var selectedImage = await _image.ReadImage(id);
         var img = System.IO.File.OpenRead(locationPrefix + selectedImage.ImageUrl);
 
         using (SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(img))
@@ -60,44 +45,38 @@ public class ImagesController : BaseApiController
     public async Task<IActionResult> getFullImageFile(int id)
     {
         var locationPrefix = _conf.GetValue<string>("NfsLocation");
-        var selectedImage = await _image.findImage(id);
+        var selectedImage = await _image.ReadImage(id);
         var img = System.IO.File.OpenRead(locationPrefix + selectedImage.ImageUrl);
 
         return File(img, "image/jpg");
     }
 
     [HttpGet("getImagesByCategory")]
-    public async Task<ActionResult<PagedList<ImageDto>>> GetImagesByCat([FromQuery] ImageParams ip)
+    public async Task<ActionResult<ImageDto[]>> GetImagesByCat([FromQuery] ImageParams ip)
     {
         var plImages = await _image.GetImagesByCategory(ip);
-        var test = new PaginationHeader(
-            plImages!.CurrentPage,
-            plImages!.PageSize,
-            plImages!.TotalCount,
-            plImages!.TotalPages
-        );
-        Response.AddPaginationHeader(test);
+        if (plImages == null || plImages.Length == 0)
+        {
+            return NotFound("No images found for this category");
+        }
         return Ok(plImages);
     }
 
     [HttpPost("getFilesForThisUser")]
-    public async Task<ActionResult<PagedList<ImageDto>>> GetImagesByUser([FromBody] CategoryParams ip)
+    public async Task<ActionResult<ImageDto[]>> GetImagesByUser([FromBody] CategoryParams ip)
     {
-        var plImages = await _image.GetFilesForUser(ip);
-        var test = new PaginationHeader(
-            plImages!.CurrentPage,
-            plImages!.PageSize,
-            plImages!.TotalCount,
-            plImages!.TotalPages
-        );
-        Response.AddPaginationHeader(test);
+        var plImages = await _image.findImagesByUser(ip);
+        if (plImages == null || plImages.Length == 0)
+        {
+            return NotFound("No images found for this user");
+        }
         return Ok(plImages);
     }
 
     [HttpPost("addImage")]
     public async Task<ActionResult<string>> AddImage([FromBody] ImageDto imagedto)
     {
-        var result = await _image.addImage(imagedto);
+        var result = await _image.createImage(imagedto);
         if (await _image.SaveChangesAsync())
         {
             return Ok("Image added");
@@ -131,7 +110,7 @@ public class ImagesController : BaseApiController
     [HttpGet("findImage/{Id}", Name = "GetImage")]
     public async Task<ActionResult<ImageDto>> FindImage(int Id)
     {
-        return await _image.findImage(Id);
+        return await _image.ReadImage(Id);
     }
 
    [HttpGet("getCarousel/{Id}")]

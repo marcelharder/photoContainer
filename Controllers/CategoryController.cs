@@ -9,23 +9,16 @@ private readonly ICategory _cat;
     {
         _cat = cat;
     }
-
-    [HttpGet("getCategories")]
-    public async Task<IActionResult> GetCategories()
-    {
-        var result = await _cat.getCategories();
-        return Ok(result);
-    }
-
-    [HttpPost("getAllCategories")]
+    
+    [HttpGet("getAllCategories")]
     public async Task<IActionResult> Categories([FromBody] CategoryParams cp)
     {
-        var result = await _cat.GetAllCategories(cp);
+        var result = await _cat.GetAllCategories();
         return Ok(result);
     }
 
-
-    [HttpPost("getAllowedCategories")]
+    
+    [HttpGet("getAllowedCategories")]
     public async Task<ActionResult> AllowedCategories([FromBody] CategoryParams cp)
     {
         var result = await _cat.GetAllowedCategories(cp);
@@ -35,7 +28,7 @@ private readonly ICategory _cat;
     [HttpGet("getDescription/{category}")]
     public async Task<IActionResult> GetDescription(int category)
     {
-        var result = await _cat.GetSpecificCategory(category);
+        var result = await _cat.ReadCategory(category);
         if (result == null)
         {
             return BadRequest("");

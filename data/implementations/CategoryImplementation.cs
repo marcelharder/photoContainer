@@ -4,36 +4,19 @@ public class CategoryImplementation : ICategory
 {
     private ApplicationDbContext _context;
     private DapperContext _dap;
-    private IHttpContextAccessor _ht;
-    private readonly IMapper _mapper;
-    private readonly IConfiguration _conf;
 
     public CategoryImplementation(
-        IConfiguration conf,
         DapperContext dap,
-        ApplicationDbContext context,
-        IMapper mapper,
-        IHttpContextAccessor ht
-    )
+        ApplicationDbContext context
+)
     {
-        _mapper = mapper;
         _context = context;
-        _ht = ht;
         _dap = dap;
-        _conf = conf;
-    }
+        }
 
-    public Task<CategoryDto> CreateCategory(Category up)
-    {
-        throw new NotImplementedException();
-    }
 
-    public async Task<List<Category>> getCategories()
-    {
-        return await _context.Categories.ToListAsync();
-    }
 
-    public async Task UpdateCategories()
+    public async Task UpdateCategory(CategoryDto category)
     {
         // fill a list with the id of the first image of each category
         List<int> listOfIds = new List<int>();
@@ -57,23 +40,22 @@ public class CategoryImplementation : ICategory
         //  var allImages = await context.Images.ToListAsync();
     }
 
-    public async Task<PagedList<CategoryDto>?> GetAllCategories(CategoryParams cp)
+    public async Task<CategoryDto[]?> GetAllCategories()
     {
         var query = "Select * FROM Categories";
         using var connection = _dap.CreateConnection();
         var documents = await connection.QueryAsync<CategoryDto>(query);
-
-        return PagedList<CategoryDto>.CreateAsync(documents, cp.PageNumber, cp.PageSize);
+        return documents.ToArray();
     }
 
-    public async Task<PagedList<CategoryDto>?> GetAllowedCategories(CategoryParams cp)
+    public async Task<CategoryDto[]?> GetAllowedCategories(CategoryParams cp)
     {
         var _result = new List<CategoryDto>();
         await Task.Run(() =>
         {
             foreach (int cat in cp.AllowedCategories)
             {
-                GetSpecificCategory(cat)
+                ReadCategory(cat)
                     .ContinueWith(task =>
                     {
                         var category = task.Result;
@@ -86,10 +68,14 @@ public class CategoryImplementation : ICategory
             }
         });
 
-        return PagedList<CategoryDto>.CreateAsync(_result, cp.PageNumber, cp.PageSize);
+        return _result.ToArray();
     }
-
-    public async Task<CategoryDto?> GetSpecificCategory(int id)
+    public Task<CategoryDto> CreateCategory(Category up)
+    {
+        throw new NotImplementedException();
+    }
+    
+    public async Task<CategoryDto?> ReadCategory(int id)
     {
         var query = "Select * FROM Categories WHERE Id = @id";
         using (var connection = _dap.CreateConnection())
@@ -98,12 +84,14 @@ public class CategoryImplementation : ICategory
                 query,
                 new { id }
             );
-
             return document;
         }
     }
-
     public Task UpdateCategory(Category up)
+    {
+        throw new NotImplementedException();
+    }
+    public Task DeleteCategory(int id)
     {
         throw new NotImplementedException();
     }
