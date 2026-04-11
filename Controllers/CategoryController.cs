@@ -1,3 +1,5 @@
+using api.data.dtos;
+
 namespace api.Controllers;
 
 public class CategoryController : BaseApiController
@@ -11,17 +13,17 @@ private readonly ICategory _cat;
     }
     
     [HttpGet("getAllCategories")]
-    public async Task<IActionResult> Categories([FromBody] CategoryParams cp)
+    public async Task<IActionResult> Categories()
     {
         var result = await _cat.GetAllCategories();
         return Ok(result);
     }
 
     
-    [HttpGet("getAllowedCategories")]
-    public async Task<ActionResult> AllowedCategories([FromBody] CategoryParams cp)
+    [HttpPost("getAllowedCategories")]
+    public async Task<ActionResult> AllowedCategories([FromBody] AllowedCategoriesRequest request)
     {
-        var result = await _cat.GetAllowedCategories(cp);
+        var result = await _cat.GetAllowedCategories(request.cp);
         return Ok(result);
     }
 

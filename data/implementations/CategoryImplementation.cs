@@ -48,12 +48,12 @@ public class CategoryImplementation : ICategory
         return documents.ToArray();
     }
 
-    public async Task<CategoryDto[]?> GetAllowedCategories(CategoryParams cp)
+    public async Task<CategoryDto[]?> GetAllowedCategories(int[] categoryIds)
     {
         var _result = new List<CategoryDto>();
         await Task.Run(() =>
         {
-            foreach (int cat in cp.AllowedCategories)
+            foreach (int cat in categoryIds)
             {
                 ReadCategory(cat)
                     .ContinueWith(task =>

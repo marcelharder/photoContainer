@@ -113,7 +113,7 @@ public class ImageImplementation : IImage
          return _mapper.Map<ImageDto>(selectedImage); */
     }
 
-    public async Task<ImageDto[]> findImagesByUser(CategoryParams cp)
+    /* public async Task<ImageDto[]> findImagesByUser(int[] ids)
     {
         // find all images that have the current userid in spare1
         var imageArray = await getAllImages();
@@ -123,7 +123,7 @@ public class ImageImplementation : IImage
               return tags != null && tags.Contains(cp.userId.ToString());
           }).ToArray();
         return imageArray;
-    }
+    } */
 
     public async Task<int> deleteImage(int id)
     {
@@ -237,41 +237,28 @@ public class ImageImplementation : IImage
         }
         return null;
     }
-
-    public async Task<PagedList<ImageDto>?> GetFilesForUser(CategoryParams ip)
+    public async Task<ImageDto[]?> findImagesByUser(CategoryParams cd)
     {
-        var allowedCategories = await _category.GetAllowedCategories(ip);
-
-        if (allowedCategories == null || !allowedCategories.Any())
-            return PagedList<ImageDto>.CreateAsync(
-                new List<ImageDto>(),
-                ip.PageNumber,
-                ip.PageSize
-            );
-
+        var allowedCategories = await _category.GetAllowedCategories(cd.AllowedCategories);
+        if (allowedCategories == null)
+        {
+            return null;
+        }
         var categoryIds = allowedCategories.Select(c => c.Id).ToArray();
-
         using var connection = _dap.CreateConnection();
-
-        var query =
-            @"
-        SELECT *
-        FROM Images
-        WHERE Category IN @categoryIds";
-
+        var query = @"SELECT * FROM Images WHERE Category IN @categoryIds";
         var documents = await connection.QueryAsync<ImageDto>(query, new { categoryIds });
 
         var filtered = documents
             .Where(img =>
             {
                 var tags = TransformToStringArray(img.Spare1);
-                return tags != null && tags.Contains(ip.userId.ToString());
+                return tags != null && tags.Contains(cd.userId.ToString());
             })
             .ToList();
 
-        return PagedList<ImageDto>.CreateAsync(filtered, ip.PageNumber, ip.PageSize);
+        return filtered.ToArray();
     }
-
     public string[]? TransformToStringArray(string? value)
     {
         if (string.IsNullOrWhiteSpace(value))
