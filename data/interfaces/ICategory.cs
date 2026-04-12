@@ -8,8 +8,8 @@ public interface ICategory
 
     Task<CategoryDto> CreateCategory(Category up);
     Task<CategoryDto?> ReadCategory(int category);
-    Task UpdateCategory(CategoryDto category);
-    Task DeleteCategory(int id);
+    Task<int> UpdateCategory(CategoryDto category);
+    Task<int> DeleteCategory(int id);
 
 
 }

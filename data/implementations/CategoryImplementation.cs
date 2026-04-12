@@ -16,30 +16,7 @@ public class CategoryImplementation : ICategory
 
 
 
-    public async Task UpdateCategory(CategoryDto category)
-    {
-        // fill a list with the id of the first image of each category
-        List<int> listOfIds = new List<int>();
-        var counter = 0;
-
-        var allCategories = await _context.Categories.ToListAsync();
-        foreach (Category cat in allCategories)
-        {
-            var images = _context.Images.Where(global => global.Category == cat.Id).ToList();
-            listOfIds.Add(images[0].Id);
-        }
-
-        // with this list update the Categories
-        foreach (Category cat in allCategories)
-        {
-            cat.MainPhoto = listOfIds[counter];
-            _context.Categories.Update(cat);
-            await _context.SaveChangesAsync();
-            counter++;
-        }
-        //  var allImages = await context.Images.ToListAsync();
-    }
-
+   
     public async Task<CategoryDto[]?> GetAllCategories()
     {
         var query = "Select * FROM Categories";
@@ -87,12 +64,20 @@ public class CategoryImplementation : ICategory
             return document;
         }
     }
-    public Task UpdateCategory(Category up)
+    public Task<int> UpdateCategory(CategoryDto up)
     {
-        throw new NotImplementedException();
+        var query = "UPDATE Categories SET Name = @Name, Description = @Description, MainPhoto = @MainPhoto WHERE Id = @Id";
+        using var connection = _dap.CreateConnection();
+        connection.Execute(query, new { up.Name, up.Description, up.MainPhoto, up.Id });
+        return Task.FromResult(1); 
     }
-    public Task DeleteCategory(int id)
+    public Task<int> DeleteCategory(int id)
     {
-        throw new NotImplementedException();
+        var query = "DELETE FROM Categories WHERE Id = @id";
+        using var connection = _dap.CreateConnection();
+        connection.Execute(query, new { id });
+        return Task.FromResult(1);   
     }
+
+    
 }

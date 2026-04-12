@@ -6,16 +6,12 @@ namespace api.Controllers;
 public class ImagesController : BaseApiController
 {
     private readonly IImage _image;
-    private readonly IMapper _mapper;
-    private readonly  ICategory _category;
     private readonly IConfiguration _conf;
 
-    public ImagesController(IImage image, IMapper mapper, IConfiguration conf, ICategory category)
+    public ImagesController(IImage image,IConfiguration conf)
     {
         _image = image;
-        _mapper = mapper;
         _conf = conf;
-        _category = category;
     }
 
   
@@ -84,7 +80,6 @@ public class ImagesController : BaseApiController
         return BadRequest("Image was not added");
     }
     
-
     [HttpDelete("deleteImage/{id}")]
     public async Task<ActionResult<int>> DeleteImage(int id)
     {

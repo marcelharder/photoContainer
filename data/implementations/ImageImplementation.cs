@@ -244,7 +244,9 @@ public class ImageImplementation : IImage
         {
             return null;
         }
-        var categoryIds = allowedCategories.Select(c => c.Id).ToArray();
+        //var categoryIds = allowedCategories.Select(c => c.Id).ToArray();
+        var categoryIds = cd.AllowedCategories;
+
         using var connection = _dap.CreateConnection();
         var query = @"SELECT * FROM Images WHERE Category IN @categoryIds";
         var documents = await connection.QueryAsync<ImageDto>(query, new { categoryIds });
@@ -252,8 +254,14 @@ public class ImageImplementation : IImage
         var filtered = documents
             .Where(img =>
             {
-                var tags = TransformToStringArray(img.Spare1);
-                return tags != null && tags.Contains(cd.userId.ToString());
+                if (img.Spare1 != "")
+                {
+                    var tags = TransformToStringArray(img.Spare1);
+                    return tags != null && tags.Contains(cd.userId.ToString());
+                } else
+                {
+                    return false;
+                }
             })
             .ToList();
 
@@ -263,39 +271,12 @@ public class ImageImplementation : IImage
     {
         if (string.IsNullOrWhiteSpace(value))
             return null;
-
         return value
             .Split(',', StringSplitOptions.RemoveEmptyEntries)
             .Select(x => x.Trim())
             .ToArray();
     }
-    public Task<ImageDto?> getMainImageOfCategory(int categoryId)
-    {
-        //get the image with the lowest id of this category
-        var query = "Select * FROM Images Where Category = @categoryId ORDER BY Id ASC LIMIT 1";
-        using var connection = _dap.CreateConnection();
-        var documents = connection.QueryAsync<ImageDto>(query, new { categoryId }).Result;
-        var selectedImage = documents.FirstOrDefault();
-        if (selectedImage != null)
-        {
-            return Task.FromResult<ImageDto?>(new ImageDto
-            {
-                Id = selectedImage.Id,
-                ImageUrl = selectedImage.ImageUrl,
-                YearTaken = selectedImage.YearTaken,
-                Location = selectedImage.Location,
-                Familie = selectedImage.Familie,
-                Category = selectedImage.Category,
-                Quality = selectedImage.Quality,
-                Series = selectedImage.Series,
-                Spare1 = selectedImage.Spare1,
-                Spare2 = selectedImage.Spare2,
-                Spare3 = selectedImage.Spare3
-            });
-        }
-
-        else { return Task.FromResult<ImageDto?>(null); }
-    }
+   
 
 
 
