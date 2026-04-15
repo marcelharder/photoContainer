@@ -31,6 +31,7 @@ try
     await context.Database.EnsureCreatedAsync();
     await Seed.SeedCategories(context);
     await Seed.SeedImages(context, image, category);
+    await Seed.AddMainPhotoToCategories(context);
 
 }
 catch (Exception ex)

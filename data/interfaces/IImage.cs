@@ -1,18 +1,18 @@
 namespace photoContainer.data.interfaces;
 
+using photoContainer.data.models;
+
 public interface IImage
 {
-    Task<PagedList<ImageDto>?> GetFilesForUser(CategoryParams ip);
-    Task<ActionResult<CarouselDto>> getCarouselData(int id);
-    Task<PagedList<ImageDto>> getImages(ImageParams imgP);
-    public Task<PagedList<ImageDto>?> GetImagesByCategory(ImageParams ip);
 
-    Task<int> addImage(ImageDto imdto);
-    Task<int> deleteImage(int id);
-    //Task SeedImages();
+    Task<ActionResult<CarouselDto>> getCarouselData(int id);
+    Task<ImageDto[]> getAllImages();
+    Task<ImageDto[]?> GetImagesByCategory(ImageParams ip);
+    Task<ImageDto[]?> findImagesByUser(CategoryParams ip);
+    Task<int> createImage(ImageDto imdto);
+    Task<ImageDto> ReadImage(int Id);
     Task<int> updateImage(ImageDto image);
-    Task<ImageDto> findImage(int Id);
-    Task<ActionResult<List<ImageDto>>> findImagesByUser(List<int> catP);
+    Task<int> deleteImage(int id);
     Task<bool> SaveChangesAsync();
-   
+
 }

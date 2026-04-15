@@ -4,76 +4,35 @@ public class CategoryImplementation : ICategory
 {
     private ApplicationDbContext _context;
     private DapperContext _dap;
-    private IHttpContextAccessor _ht;
-    private readonly IMapper _mapper;
-    private readonly IConfiguration _conf;
 
     public CategoryImplementation(
-        IConfiguration conf,
         DapperContext dap,
-        ApplicationDbContext context,
-        IMapper mapper,
-        IHttpContextAccessor ht
-    )
+        ApplicationDbContext context
+)
     {
-        _mapper = mapper;
         _context = context;
-        _ht = ht;
         _dap = dap;
-        _conf = conf;
-    }
-
-    public Task<CategoryDto> CreateCategory(Category up)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<List<Category>> getCategories()
-    {
-        return await _context.Categories.ToListAsync();
-    }
-
-    public async Task UpdateCategories()
-    {
-        // fill a list with the id of the first image of each category
-        List<int> listOfIds = new List<int>();
-        var counter = 0;
-
-        var allCategories = await _context.Categories.ToListAsync();
-        foreach (Category cat in allCategories)
-        {
-            var images = _context.Images.Where(global => global.Category == cat.Id).ToList();
-            listOfIds.Add(images[0].Id);
         }
 
-        // with this list update the Categories
-        foreach (Category cat in allCategories)
-        {
-            cat.MainPhoto = listOfIds[counter];
-            _context.Categories.Update(cat);
-            await _context.SaveChangesAsync();
-            counter++;
-        }
-        //  var allImages = await context.Images.ToListAsync();
-    }
 
-    public async Task<PagedList<CategoryDto>?> GetAllCategories(CategoryParams cp)
+
+   
+    public async Task<CategoryDto[]?> GetAllCategories()
     {
         var query = "Select * FROM Categories";
         using var connection = _dap.CreateConnection();
         var documents = await connection.QueryAsync<CategoryDto>(query);
-
-        return PagedList<CategoryDto>.CreateAsync(documents, cp.PageNumber, cp.PageSize);
+        return documents.ToArray();
     }
 
-    public async Task<PagedList<CategoryDto>?> GetAllowedCategories(CategoryParams cp)
+    public async Task<CategoryDto[]?> GetAllowedCategories(int[] categoryIds)
     {
         var _result = new List<CategoryDto>();
         await Task.Run(() =>
         {
-            foreach (int cat in cp.AllowedCategories)
+            foreach (int cat in categoryIds)
             {
-                GetSpecificCategory(cat)
+                ReadCategory(cat)
                     .ContinueWith(task =>
                     {
                         var category = task.Result;
@@ -86,10 +45,14 @@ public class CategoryImplementation : ICategory
             }
         });
 
-        return PagedList<CategoryDto>.CreateAsync(_result, cp.PageNumber, cp.PageSize);
+        return _result.ToArray();
     }
-
-    public async Task<CategoryDto?> GetSpecificCategory(int id)
+    public Task<CategoryDto> CreateCategory(Category up)
+    {
+        throw new NotImplementedException();
+    }
+    
+    public async Task<CategoryDto?> ReadCategory(int id)
     {
         var query = "Select * FROM Categories WHERE Id = @id";
         using (var connection = _dap.CreateConnection())
@@ -98,13 +61,23 @@ public class CategoryImplementation : ICategory
                 query,
                 new { id }
             );
-
             return document;
         }
     }
-
-    public Task UpdateCategory(Category up)
+    public Task<int> UpdateCategory(CategoryDto up)
     {
-        throw new NotImplementedException();
+        var query = "UPDATE Categories SET Name = @Name, Description = @Description, MainPhoto = @MainPhoto WHERE Id = @Id";
+        using var connection = _dap.CreateConnection();
+        connection.Execute(query, new { up.Name, up.Description, up.MainPhoto, up.Id });
+        return Task.FromResult(1); 
     }
+    public Task<int> DeleteCategory(int id)
+    {
+        var query = "DELETE FROM Categories WHERE Id = @id";
+        using var connection = _dap.CreateConnection();
+        connection.Execute(query, new { id });
+        return Task.FromResult(1);   
+    }
+
+    
 }

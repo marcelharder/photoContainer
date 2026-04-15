@@ -2,12 +2,14 @@ namespace photoContainer.data.interfaces;
 
 public interface ICategory
 {
+    Task<CategoryDto[]?> GetAllCategories();
+    Task<CategoryDto[]?> GetAllowedCategories(int[] categoryIds);
+    
+
     Task<CategoryDto> CreateCategory(Category up);
-    Task<PagedList<CategoryDto>> GetAllCategories(CategoryParams cp);
-    Task<PagedList<CategoryDto>> GetAllowedCategories(CategoryParams cp);
-    Task<CategoryDto?> GetSpecificCategory(int category);
+    Task<CategoryDto?> ReadCategory(int category);
+    Task<int> UpdateCategory(CategoryDto category);
+    Task<int> DeleteCategory(int id);
 
-    Task<List<Category>> getCategories();
 
-     Task UpdateCategories();
 }

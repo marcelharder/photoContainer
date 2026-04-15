@@ -7,18 +7,14 @@ public class Seed
         if (await context.Categories.AnyAsync())
             return;
 
-        var counter = 1;
         var catData = await System.IO.File.ReadAllTextAsync("data/seed/CategoryData.json");
         var categories = JsonSerializer.Deserialize<List<Category>>(catData);
-
         if (categories != null)
         {
             categories = categories.OrderBy(c => c.YearTaken).ToList(); // ORDER BY Year
-
             foreach (Category im in categories)
             {
-                im.MainPhoto = counter; // set main photo
-                counter = counter + im.Number_of_images - 1;
+                im.MainPhoto = 0; // will be updated later in AddMainPhotoToCategories, when all the images are there
                 im.Name = char.ToUpper(im.Name[0]) + im.Name.Substring(1); // MAKE FIRST CHARACTER A CAPITAL LETTER
                 _ = context.Categories.Add(im); // save image to database
             }
@@ -31,9 +27,9 @@ public class Seed
         if (await context.Images.AnyAsync())
             return;
 
-        var categories = await categoryService.getCategories();
+        var categories = await categoryService.GetAllCategories();
 
-        if (categories == null || categories.Count == 0)
+        if (categories == null || categories.Length == 0)
             return;
 
         var images = new List<models.Image>();
@@ -42,7 +38,8 @@ public class Seed
 
         foreach (var category in categories)
         {
-
+            if(category.Name == null)
+                continue;
             var segments = category.Name.Split(new[] { '/','\\'}, StringSplitOptions.RemoveEmptyEntries);
 
             var directoryPath = Path.Combine(new[] {"/nfs/fotoproject/fotos"}.Concat(segments).ToArray());
@@ -73,7 +70,7 @@ public class Seed
                     YearTaken = 1995,
                     Location = string.Empty,
                     Familie = string.Empty,
-                    Category = category.Id,
+                    Category = (int)category.Id,
                     Series = string.Empty,
                     Spare1 = string.Empty,
                     Spare2 = string.Empty,
@@ -86,6 +83,32 @@ public class Seed
         {
             await context.Images.AddRangeAsync(images);
             await context.SaveChangesAsync();
+        }
+    }
+
+    public static async Task AddMainPhotoToCategories(ApplicationDbContext context)
+    {
+        if (await context.Categories.AnyAsync()){
+        
+        var categories = await context.Categories.ToListAsync();
+
+        foreach (var category in categories)
+        {
+            if (category.MainPhoto == 0)
+            {
+                var mainPhoto = await context.Images
+                    .Where(i => i.Category == category.Id)
+                    .OrderBy(i => i.Id)
+                    .FirstOrDefaultAsync();
+
+                if (mainPhoto != null)
+                {
+                    category.MainPhoto = mainPhoto.Id;
+                }
+            }
+        }
+
+        await context.SaveChangesAsync();
         }
     }
 }
