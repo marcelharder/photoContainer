@@ -12,10 +12,10 @@ public class CategoryController : BaseApiController
         _cat = cat;
     }
 
-    [HttpGet("getAllCategories")]
-    public async Task<IActionResult> Categories()
+    [HttpGet("getAllCategoriesForUser/{id}")]
+    public async Task<IActionResult> Categories(int id)
     {
-        var result = await _cat.GetAllCategories();
+        var result = await _cat.GetAllCategoriesForUser(id);
         return Ok(result);
     }
 

@@ -2,7 +2,7 @@ namespace photoContainer.data.interfaces;
 
 public interface ICategory
 {
-    Task<CategoryDto[]?> GetAllCategories();
+    Task<CategoryDto[]?> GetAllCategoriesForUser(int userId);
     Task<CategoryDto[]?> GetAllowedCategories(int[] categoryIds);
     
 
