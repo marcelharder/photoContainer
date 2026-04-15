@@ -19,7 +19,7 @@ services:
       retries: 20
 
   photoService:
-    image: marcel88/photocontainer:v1
+    image: marcel88/photocontainer:v2
     restart: always
     ports:
       - "8120:8080"
