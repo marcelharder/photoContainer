@@ -24,6 +24,13 @@ public class CategoryImplementation : ICategory
         var documents = await connection.QueryAsync<CategoryDto>(query, new { userId });
         return documents.ToArray();
     }
+     public async Task<CategoryDto[]?> GetAllCategories()
+    {
+        var query = "Select * FROM Categories";
+        using var connection = _dap.CreateConnection();
+        var documents = await connection.QueryAsync<CategoryDto>(query);
+        return documents.ToArray();
+    }
 
     public async Task<CategoryDto[]?> GetAllowedCategories(int[] categoryIds)
     {
