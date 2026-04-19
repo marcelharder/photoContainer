@@ -47,10 +47,10 @@ public class ImagesController : BaseApiController
         return File(img, "image/jpg");
     }
 
-    [HttpGet("getImagesByCategory")]
-    public async Task<ActionResult<ImageDto[]>> GetImagesByCat([FromQuery] ImageParams ip)
+    [HttpGet("getImagesByCategory/{categoryId}")]
+    public async Task<ActionResult<ImageDto[]>> GetImagesByCategory(int categoryId)
     {
-        var plImages = await _image.GetImagesByCategory(ip);
+        var plImages = await _image.GetImagesByCategory(categoryId);
         if (plImages == null || plImages.Length == 0)
         {
             return NotFound("No images found for this category");
@@ -72,34 +72,22 @@ public class ImagesController : BaseApiController
     [HttpPost("addImage")]
     public async Task<ActionResult<string>> AddImage([FromBody] ImageDto imagedto)
     {
-        var result = await _image.createImage(imagedto);
-        if (await _image.SaveChangesAsync())
-        {
-            return Ok("Image added");
-        }
-        return BadRequest("Image was not added");
+        await _image.createImage(imagedto);
+        return Ok("Image added");
     }
     
     [HttpDelete("deleteImage/{id}")]
     public async Task<ActionResult<int>> DeleteImage(int id)
     {
-        var result = await _image.deleteImage(id);
-        if (await _image.SaveChangesAsync())
-        {
-            return Ok("Image removed");
-        }
-        return BadRequest("Image was not deleted");
+        await _image.deleteImage(id);
+        return Ok("Image deleted");
     }
 
     [HttpPut("updateImage")]
     public async Task<ActionResult<int>> UpdateImage(ImageDto imagedto)
     {
-        var result = await _image.updateImage(imagedto);
-        if (await _image.SaveChangesAsync())
-        {
-            return Ok("Image updated");
-        }
-        return BadRequest("Image was not updated");
+        await _image.updateImage(imagedto);
+        return Ok("Image updated");
     }
 
     [HttpGet("findImage/{Id}", Name = "GetImage")]
