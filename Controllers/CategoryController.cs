@@ -68,6 +68,11 @@ public class CategoryController : BaseApiController
     [HttpPost("addCategory")]
     public async Task<ActionResult> AddCategory([FromBody] CategoryDto category)
     {
+        if (category == null)
+        {
+            return BadRequest("Category data is required.");
+        }
+
         var categoryModel = new Category
         {
             Id = category.Id,

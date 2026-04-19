@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace photoContainer.data.implementations;
 
@@ -52,7 +53,7 @@ public class ImageImplementation : IImage
         }
         return _result.ToArray();
     }
-    public async Task<ImageDto[]> GetImagesByCategory(ImageParams ip)
+    public async Task<ImageDto[]?> GetImagesByCategory(ImageParams ip)
     {
         var categoryId = ip.Category;
         var query = "Select * FROM Images Where Category = @categoryId";
@@ -107,13 +108,13 @@ public class ImageImplementation : IImage
         }
         else
         {
-            return null;
+            return new ImageDto();
         }
         /*  var selectedImage = await _context.Images.FirstOrDefaultAsync(x => x.Id == Id);
          return _mapper.Map<ImageDto>(selectedImage); */
     }
 
-    /* public async Task<ImageDto[]> findImagesByUser(int[] ids)
+    /* public async Task<ImageDto[]?> findImagesByUser(int[] ids)
     {
         // find all images that have the current userid in spare1
         var imageArray = await getAllImages();
@@ -179,7 +180,7 @@ public class ImageImplementation : IImage
         using var connection = _dap.CreateConnection();
         return await connection.ExecuteAsync(query, parameters);
     }
-    public async Task<ActionResult<CarouselDto>> getCarouselData(int id)
+    public async Task<CarouselDto> getCarouselData(int id)
     {
         var response = new CarouselDto();
         var selectedImage = await _context.Images.FirstOrDefaultAsync(x => x.Id == id);
@@ -235,7 +236,9 @@ public class ImageImplementation : IImage
                 return response;
             }
         }
-        return null;
+        return new CarouselDto();
+    
+         
     }
     public async Task<ImageDto[]?> findImagesByUser(CategoryParams cd)
     {
