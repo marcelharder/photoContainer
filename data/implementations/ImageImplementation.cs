@@ -52,9 +52,8 @@ public class ImageImplementation : IImage
         }
         return _result.ToArray();
     }
-    public async Task<ImageDto[]> GetImagesByCategory(ImageParams ip)
+    public async Task<ImageDto[]> GetImagesByCategory(int categoryId)
     {
-        var categoryId = ip.Category;
         var query = "Select * FROM Images Where Category = @categoryId";
         /// select correct category
         using var connection = _dap.CreateConnection();

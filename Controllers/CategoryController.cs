@@ -21,6 +21,13 @@ public class CategoryController : BaseApiController
         return Ok(result);
     }
 
+    [HttpGet("getAllCategories")]
+    public async Task<ActionResult> AllCategories()
+    {
+        var result = await _cat.GetAllCategories();
+        return Ok(result);
+    }
+
     [HttpGet("getDescription/{category}")]
     public async Task<IActionResult> GetDescription(int category)
     {

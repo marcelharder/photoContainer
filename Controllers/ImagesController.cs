@@ -47,10 +47,10 @@ public class ImagesController : BaseApiController
         return File(img, "image/jpg");
     }
 
-    [HttpGet("getImagesByCategory")]
-    public async Task<ActionResult<ImageDto[]>> GetImagesByCat([FromQuery] ImageParams ip)
+    [HttpGet("getImagesByCategory/{categoryId}")]
+    public async Task<ActionResult<ImageDto[]>> GetImagesByCategory(int categoryId)
     {
-        var plImages = await _image.GetImagesByCategory(ip);
+        var plImages = await _image.GetImagesByCategory(categoryId);
         if (plImages == null || plImages.Length == 0)
         {
             return NotFound("No images found for this category");
