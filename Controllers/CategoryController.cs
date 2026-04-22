@@ -19,6 +19,13 @@ public class CategoryController : BaseApiController
     {
         var result = await _cat.GetAllowedCategories(request.cp);
         return Ok(result);
+    } 
+    
+    [HttpGet("getAllCategories")]
+    public async Task<ActionResult> AllCategories()
+    {
+        var result = await _cat.GetAllCategories();
+        return Ok(result);
     }
 
     [HttpGet("getAllCategories")]
@@ -66,6 +73,11 @@ public class CategoryController : BaseApiController
     [HttpPost("addCategory")]
     public async Task<ActionResult> AddCategory([FromBody] CategoryDto category)
     {
+        if (category == null)
+        {
+            return BadRequest("Category data is required.");
+        }
+
         var categoryModel = new Category
         {
             Id = category.Id,

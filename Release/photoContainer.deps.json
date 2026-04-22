@@ -8,7 +8,6 @@
     ".NETCoreApp,Version=v9.0": {
       "photoContainer/1.0.0": {
         "dependencies": {
-          "AutoMapper": "16.1.0",
           "CloudinaryDotNet": "1.27.9",
           "Dapper": "2.1.66",
           "IronSoftware.System.Drawing": "2025.9.3",
@@ -26,19 +25,6 @@
         },
         "runtime": {
           "photoContainer.dll": {}
-        }
-      },
-      "AutoMapper/16.1.0": {
-        "dependencies": {
-          "Microsoft.Extensions.Logging.Abstractions": "10.0.0",
-          "Microsoft.Extensions.Options": "10.0.0",
-          "Microsoft.IdentityModel.JsonWebTokens": "8.15.0"
-        },
-        "runtime": {
-          "lib/net9.0/AutoMapper.dll": {
-            "assemblyVersion": "16.0.0.0",
-            "fileVersion": "16.1.0.0"
-          }
         }
       },
       "BitMiracle.LibTiff.NET/2.4.649": {
@@ -513,7 +499,7 @@
       "Microsoft.Extensions.ApiDescription.Server/9.0.0": {},
       "Microsoft.Extensions.Caching.Abstractions/9.0.11": {
         "dependencies": {
-          "Microsoft.Extensions.Primitives": "10.0.0"
+          "Microsoft.Extensions.Primitives": "9.0.11"
         },
         "runtime": {
           "lib/net9.0/Microsoft.Extensions.Caching.Abstractions.dll": {
@@ -525,10 +511,10 @@
       "Microsoft.Extensions.Caching.Memory/9.0.11": {
         "dependencies": {
           "Microsoft.Extensions.Caching.Abstractions": "9.0.11",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.0",
-          "Microsoft.Extensions.Logging.Abstractions": "10.0.0",
-          "Microsoft.Extensions.Options": "10.0.0",
-          "Microsoft.Extensions.Primitives": "10.0.0"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.11",
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.11",
+          "Microsoft.Extensions.Options": "9.0.11",
+          "Microsoft.Extensions.Primitives": "9.0.11"
         },
         "runtime": {
           "lib/net9.0/Microsoft.Extensions.Caching.Memory.dll": {
@@ -539,7 +525,7 @@
       },
       "Microsoft.Extensions.Configuration.Abstractions/9.0.11": {
         "dependencies": {
-          "Microsoft.Extensions.Primitives": "10.0.0"
+          "Microsoft.Extensions.Primitives": "9.0.11"
         },
         "runtime": {
           "lib/net9.0/Microsoft.Extensions.Configuration.Abstractions.dll": {
@@ -550,7 +536,7 @@
       },
       "Microsoft.Extensions.DependencyInjection/9.0.11": {
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.0"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.11"
         },
         "runtime": {
           "lib/net9.0/Microsoft.Extensions.DependencyInjection.dll": {
@@ -559,11 +545,11 @@
           }
         }
       },
-      "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.0": {
+      "Microsoft.Extensions.DependencyInjection.Abstractions/9.0.11": {
         "runtime": {
           "lib/net9.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
-            "assemblyVersion": "10.0.0.0",
-            "fileVersion": "10.0.25.52411"
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
           }
         }
       },
@@ -579,7 +565,7 @@
         "dependencies": {
           "Microsoft.AspNetCore.Cryptography.KeyDerivation": "9.0.11",
           "Microsoft.Extensions.Logging": "9.0.11",
-          "Microsoft.Extensions.Options": "10.0.0"
+          "Microsoft.Extensions.Options": "9.0.11"
         },
         "runtime": {
           "lib/net9.0/Microsoft.Extensions.Identity.Core.dll": {
@@ -604,8 +590,8 @@
       "Microsoft.Extensions.Logging/9.0.11": {
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection": "9.0.11",
-          "Microsoft.Extensions.Logging.Abstractions": "10.0.0",
-          "Microsoft.Extensions.Options": "10.0.0"
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.11",
+          "Microsoft.Extensions.Options": "9.0.11"
         },
         "runtime": {
           "lib/net9.0/Microsoft.Extensions.Logging.dll": {
@@ -614,35 +600,34 @@
           }
         }
       },
-      "Microsoft.Extensions.Logging.Abstractions/10.0.0": {
+      "Microsoft.Extensions.Logging.Abstractions/9.0.11": {
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.0",
-          "System.Diagnostics.DiagnosticSource": "10.0.0"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.11"
         },
         "runtime": {
           "lib/net9.0/Microsoft.Extensions.Logging.Abstractions.dll": {
-            "assemblyVersion": "10.0.0.0",
-            "fileVersion": "10.0.25.52411"
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
           }
         }
       },
-      "Microsoft.Extensions.Options/10.0.0": {
+      "Microsoft.Extensions.Options/9.0.11": {
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.0",
-          "Microsoft.Extensions.Primitives": "10.0.0"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.11",
+          "Microsoft.Extensions.Primitives": "9.0.11"
         },
         "runtime": {
           "lib/net9.0/Microsoft.Extensions.Options.dll": {
-            "assemblyVersion": "10.0.0.0",
-            "fileVersion": "10.0.25.52411"
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
           }
         }
       },
-      "Microsoft.Extensions.Primitives/10.0.0": {
+      "Microsoft.Extensions.Primitives/9.0.11": {
         "runtime": {
           "lib/net9.0/Microsoft.Extensions.Primitives.dll": {
-            "assemblyVersion": "10.0.0.0",
-            "fileVersion": "10.0.25.52411"
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
           }
         }
       },
@@ -701,7 +686,7 @@
       },
       "Microsoft.IdentityModel.Tokens/8.15.0": {
         "dependencies": {
-          "Microsoft.Extensions.Logging.Abstractions": "10.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.11",
           "Microsoft.IdentityModel.Logging": "8.15.0"
         },
         "runtime": {
@@ -734,8 +719,8 @@
       },
       "MySqlConnector/2.5.0": {
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.0",
-          "Microsoft.Extensions.Logging.Abstractions": "10.0.0"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.11",
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.11"
         },
         "runtime": {
           "lib/net9.0/MySqlConnector.dll": {
@@ -969,12 +954,13 @@
           "System.Runtime": "4.3.1"
         }
       },
-      "System.Diagnostics.DiagnosticSource/10.0.0": {
-        "runtime": {
-          "lib/net9.0/System.Diagnostics.DiagnosticSource.dll": {
-            "assemblyVersion": "10.0.0.0",
-            "fileVersion": "10.0.25.52411"
-          }
+      "System.Diagnostics.DiagnosticSource/4.3.0": {
+        "dependencies": {
+          "System.Collections": "4.3.0",
+          "System.Diagnostics.Tracing": "4.3.0",
+          "System.Reflection": "4.3.0",
+          "System.Runtime": "4.3.1",
+          "System.Threading": "4.3.0"
         }
       },
       "System.Diagnostics.Tracing/4.3.0": {
@@ -1063,7 +1049,7 @@
           "Microsoft.NETCore.Platforms": "1.1.1",
           "System.Collections": "4.3.0",
           "System.Diagnostics.Debug": "4.3.0",
-          "System.Diagnostics.DiagnosticSource": "10.0.0",
+          "System.Diagnostics.DiagnosticSource": "4.3.0",
           "System.Diagnostics.Tracing": "4.3.0",
           "System.Globalization": "4.3.0",
           "System.Globalization.Extensions": "4.3.0",
@@ -1330,13 +1316,6 @@
       "serviceable": false,
       "sha512": ""
     },
-    "AutoMapper/16.1.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-dslB2z3keOkRdo5N1sWUhTv+37ZXKm2tsJOcUPVOi+Kf1CxkcVsGwH5MeLDKyR+T8WPKwiPq2yhDPMkCfPK16w==",
-      "path": "automapper/16.1.0",
-      "hashPath": "automapper.16.1.0.nupkg.sha512"
-    },
     "BitMiracle.LibTiff.NET/2.4.649": {
       "type": "package",
       "serviceable": true,
@@ -1547,12 +1526,12 @@
       "path": "microsoft.extensions.dependencyinjection/9.0.11",
       "hashPath": "microsoft.extensions.dependencyinjection.9.0.11.nupkg.sha512"
     },
-    "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.0": {
+    "Microsoft.Extensions.DependencyInjection.Abstractions/9.0.11": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-L3AdmZ1WOK4XXT5YFPEwyt0ep6l8lGIPs7F5OOBZc77Zqeo01Of7XXICy47628sdVl0v/owxYJTe86DTgFwKCA==",
-      "path": "microsoft.extensions.dependencyinjection.abstractions/10.0.0",
-      "hashPath": "microsoft.extensions.dependencyinjection.abstractions.10.0.0.nupkg.sha512"
+      "sha512": "sha512-+ZxxZzcVU+IEzq12GItUzf/V3mEc5nSLiXijwvDc4zyhbjvSZZ043giSZqGnhakrjwRWjkerIHPrRwm9okEIpw==",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/9.0.11",
+      "hashPath": "microsoft.extensions.dependencyinjection.abstractions.9.0.11.nupkg.sha512"
     },
     "Microsoft.Extensions.DependencyModel/9.0.11": {
       "type": "package",
@@ -1582,26 +1561,26 @@
       "path": "microsoft.extensions.logging/9.0.11",
       "hashPath": "microsoft.extensions.logging.9.0.11.nupkg.sha512"
     },
-    "Microsoft.Extensions.Logging.Abstractions/10.0.0": {
+    "Microsoft.Extensions.Logging.Abstractions/9.0.11": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-FU/IfjDfwaMuKr414SSQNTIti/69bHEMb+QKrskRb26oVqpx3lNFXMjs/RC9ZUuhBhcwDM2BwOgoMw+PZ+beqQ==",
-      "path": "microsoft.extensions.logging.abstractions/10.0.0",
-      "hashPath": "microsoft.extensions.logging.abstractions.10.0.0.nupkg.sha512"
+      "sha512": "sha512-UKWFTDwtZQIoypyt1YPVsxTnDK+0sKn26+UeSGeNlkRQddrkt9EC6kP4g94rgO/WOZkz94bKNlF1dVZN3QfPFQ==",
+      "path": "microsoft.extensions.logging.abstractions/9.0.11",
+      "hashPath": "microsoft.extensions.logging.abstractions.9.0.11.nupkg.sha512"
     },
-    "Microsoft.Extensions.Options/10.0.0": {
+    "Microsoft.Extensions.Options/9.0.11": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-8oCAgXOow5XDrY9HaXX1QmH3ORsyZO/ANVHBlhLyCeWTH5Sg4UuqZeOTWJi6484M+LqSx0RqQXDJtdYy2BNiLQ==",
-      "path": "microsoft.extensions.options/10.0.0",
-      "hashPath": "microsoft.extensions.options.10.0.0.nupkg.sha512"
+      "sha512": "sha512-HX4M3BLkW1dtByMKHDVq6r7Jy6e4hf8NDzHpIgz7C8BtYk9JQHhfYX5c1UheQTD5Veg1yBhz/cD9C8vtrGrk9w==",
+      "path": "microsoft.extensions.options/9.0.11",
+      "hashPath": "microsoft.extensions.options.9.0.11.nupkg.sha512"
     },
-    "Microsoft.Extensions.Primitives/10.0.0": {
+    "Microsoft.Extensions.Primitives/9.0.11": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-inRnbpCS0nwO/RuoZIAqxQUuyjaknOOnCEZB55KSMMjRhl0RQDttSmLSGsUJN3RQ3ocf5NDLFd2mOQViHqMK5w==",
-      "path": "microsoft.extensions.primitives/10.0.0",
-      "hashPath": "microsoft.extensions.primitives.10.0.0.nupkg.sha512"
+      "sha512": "sha512-rtUNSIhbQTv8iSBTFvtg2b/ZUkoqC9qAH9DdC2hr+xPpoZrxiCITci9UR/ELUGUGnGUrF8Xye+tGVRhCxE+4LA==",
+      "path": "microsoft.extensions.primitives/9.0.11",
+      "hashPath": "microsoft.extensions.primitives.9.0.11.nupkg.sha512"
     },
     "Microsoft.IdentityModel.Abstractions/8.15.0": {
       "type": "package",
@@ -1925,12 +1904,12 @@
       "path": "system.diagnostics.debug/4.3.0",
       "hashPath": "system.diagnostics.debug.4.3.0.nupkg.sha512"
     },
-    "System.Diagnostics.DiagnosticSource/10.0.0": {
+    "System.Diagnostics.DiagnosticSource/4.3.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-0KdBK+h7G13PuOSC2R/DalAoFMvdYMznvGRuICtkdcUMXgl/gYXsG6z4yUvTxHSMACorWgHCU1Faq0KUHU6yAQ==",
-      "path": "system.diagnostics.diagnosticsource/10.0.0",
-      "hashPath": "system.diagnostics.diagnosticsource.10.0.0.nupkg.sha512"
+      "sha512": "sha512-tD6kosZnTAGdrEa0tZSuFyunMbt/5KYDnHdndJYGqZoNy00XVXyACd5d6KnE1YgYv3ne2CjtAfNXo/fwEhnKUA==",
+      "path": "system.diagnostics.diagnosticsource/4.3.0",
+      "hashPath": "system.diagnostics.diagnosticsource.4.3.0.nupkg.sha512"
     },
     "System.Diagnostics.Tracing/4.3.0": {
       "type": "package",

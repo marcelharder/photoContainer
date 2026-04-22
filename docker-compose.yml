@@ -18,21 +18,21 @@ services:
       timeout: 5s
       retries: 20
 
-  photoService:
-    image: marcel88/photocontainer:v7
-    restart: always
-    ports:
-      - "8120:8080"
-    environment:
-      ASPNETCORE_URLS: http://+:8080
-      ConnectionStrings__SQLConnection: Server=db;Port=3306;Database=foto;User=root;Password=example;
-    networks:
-      - internal-container-network
-    volumes:
-      - myapp:/nfs/fotoproject/fotos
-    depends_on:
-      db:
-        condition: service_healthy
+#  photoService:
+#    image: marcel88/photocontainer:v6
+#    restart: always
+#    ports:
+#      - "8120:8080"
+#    environment:
+#      ASPNETCORE_URLS: http://+:8080
+#      ConnectionStrings__SQLConnection: Server=db;Port=3306;Database=foto;User=root;Password=example;
+#    networks:
+#      - internal-container-network
+#    volumes:
+#      - myapp:/nfs/fotoproject/fotos
+#    depends_on:
+#      db:
+#        condition: service_healthy
 
 volumes:
   myapp:

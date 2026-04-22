@@ -79,7 +79,6 @@ GlobalUsings.cs
 helpers/
  ApplicationServicesExtensions.cs
  AppSettings.cs
- AutoMapperProfiles.cs
  CategoryParams.cs
  ComSettings.cs
  HttpExtensions.cs
@@ -252,6 +251,7 @@ Program.cs
  System.Data.dll
  System.Diagnostics.Contracts.dll
  System.Diagnostics.Debug.dll
+ System.Diagnostics.DiagnosticSource.dll
  System.Diagnostics.FileVersionInfo.dll
  System.Diagnostics.Process.dll
  System.Diagnostics.StackTrace.dll
@@ -387,7 +387,6 @@ Program.cs
  System.Xml.XPath.XDocument.dll
  WindowsBase.dll
 <NUGET>/
- automapper/16.1.0/lib/net9.0/AutoMapper.dll
  bitmiracle.libtiff.net/2.4.649/lib/netstandard2.0/BitMiracle.LibTiff.NET.dll
  cloudinarydotnet/1.27.9/lib/netstandard2.0/CloudinaryDotNet.dll
  dapper/2.1.66/lib/net8.0/Dapper.dll
@@ -416,15 +415,15 @@ Program.cs
  microsoft.extensions.caching.abstractions/9.0.11/lib/net9.0/Microsoft.Extensions.Caching.Abstractions.dll
  microsoft.extensions.caching.memory/9.0.11/lib/net9.0/Microsoft.Extensions.Caching.Memory.dll
  microsoft.extensions.configuration.abstractions/9.0.11/lib/net9.0/Microsoft.Extensions.Configuration.Abstractions.dll
- microsoft.extensions.dependencyinjection.abstractions/10.0.0/lib/net9.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+ microsoft.extensions.dependencyinjection.abstractions/9.0.11/lib/net9.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
  microsoft.extensions.dependencyinjection/9.0.11/lib/net9.0/Microsoft.Extensions.DependencyInjection.dll
  microsoft.extensions.dependencymodel/9.0.11/lib/net9.0/Microsoft.Extensions.DependencyModel.dll
  microsoft.extensions.identity.core/9.0.11/lib/net9.0/Microsoft.Extensions.Identity.Core.dll
  microsoft.extensions.identity.stores/9.0.11/lib/net9.0/Microsoft.Extensions.Identity.Stores.dll
- microsoft.extensions.logging.abstractions/10.0.0/lib/net9.0/Microsoft.Extensions.Logging.Abstractions.dll
+ microsoft.extensions.logging.abstractions/9.0.11/lib/net9.0/Microsoft.Extensions.Logging.Abstractions.dll
  microsoft.extensions.logging/9.0.11/lib/net9.0/Microsoft.Extensions.Logging.dll
- microsoft.extensions.options/10.0.0/lib/net9.0/Microsoft.Extensions.Options.dll
- microsoft.extensions.primitives/10.0.0/lib/net9.0/Microsoft.Extensions.Primitives.dll
+ microsoft.extensions.options/9.0.11/lib/net9.0/Microsoft.Extensions.Options.dll
+ microsoft.extensions.primitives/9.0.11/lib/net9.0/Microsoft.Extensions.Primitives.dll
  microsoft.identitymodel.abstractions/8.15.0/lib/net9.0/Microsoft.IdentityModel.Abstractions.dll
  microsoft.identitymodel.jsonwebtokens/8.15.0/lib/net9.0/Microsoft.IdentityModel.JsonWebTokens.dll
  microsoft.identitymodel.logging/8.15.0/lib/net9.0/Microsoft.IdentityModel.Logging.dll
@@ -448,7 +447,6 @@ Program.cs
  system.composition.hosting/7.0.0/lib/net7.0/System.Composition.Hosting.dll
  system.composition.runtime/7.0.0/lib/net7.0/System.Composition.Runtime.dll
  system.composition.typedparts/7.0.0/lib/net7.0/System.Composition.TypedParts.dll
- system.diagnostics.diagnosticsource/10.0.0/lib/net9.0/System.Diagnostics.DiagnosticSource.dll
  system.identitymodel.tokens.jwt/8.15.0/lib/net9.0/System.IdentityModel.Tokens.Jwt.dll
  system.text.json/9.0.11/lib/net9.0/System.Text.Json.dll
 
@@ -479,8 +477,8 @@ Program.cs
  Microsoft.CodeAnalysis.CSharp.Analyzers.dll
 <NUGET>/
  microsoft.entityframeworkcore.analyzers/9.0.11/analyzers/dotnet/cs/Microsoft.EntityFrameworkCore.Analyzers.dll
- microsoft.extensions.logging.abstractions/10.0.0/analyzers/dotnet/roslyn4.4/cs/Microsoft.Extensions.Logging.Generators.dll
- microsoft.extensions.options/10.0.0/analyzers/dotnet/roslyn4.4/cs/Microsoft.Extensions.Options.SourceGeneration.dll
+ microsoft.extensions.logging.abstractions/9.0.11/analyzers/dotnet/roslyn4.4/cs/Microsoft.Extensions.Logging.Generators.dll
+ microsoft.extensions.options/9.0.11/analyzers/dotnet/roslyn4.4/cs/Microsoft.Extensions.Options.SourceGeneration.dll
  system.text.json/9.0.11/analyzers/dotnet/roslyn4.4/cs/System.Text.Json.SourceGeneration.dll
 
 [analyzerConfigFiles]

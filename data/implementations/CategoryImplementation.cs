@@ -13,19 +13,13 @@ public class CategoryImplementation : ICategory
         _context = context;
         _dap = dap;
         }
-
-
-
-   
-    
-     public async Task<CategoryDto[]?> GetAllCategories()
+    public async Task<CategoryDto[]?> GetAllCategories()
     {
         var query = "Select * FROM Categories";
         using var connection = _dap.CreateConnection();
         var documents = await connection.QueryAsync<CategoryDto>(query);
         return documents.ToArray();
     }
-
     public async Task<CategoryDto[]?> GetAllowedCategories(int[] categoryIds)
     {
         var _result = new List<CategoryDto>();
@@ -48,11 +42,22 @@ public class CategoryImplementation : ICategory
 
         return _result.ToArray();
     }
-    public Task<CategoryDto> CreateCategory(Category up)
+    public async Task<CategoryDto> CreateCategory(Category up)
     {
-        throw new NotImplementedException();
-    }
-    
+        var query = "INSERT INTO Categories (Name, Description, MainPhoto) VALUES (@Name, @Description, @MainPhoto); SELECT LAST_INSERT_ID();";
+        using var connection = _dap.CreateConnection();
+        var id = await connection.ExecuteScalarAsync<int>(query, new { up.Name, up.Description, up.MainPhoto });
+
+        return new CategoryDto
+        {
+            Id = id,
+            Name = up.Name,
+            Description = up.Description,
+            MainPhoto = up.MainPhoto,
+            Number_of_images = 0,
+            YearTaken = 2020
+        };
+    } 
     public async Task<CategoryDto?> ReadCategory(int id)
     {
         var query = "Select * FROM Categories WHERE Id = @id";

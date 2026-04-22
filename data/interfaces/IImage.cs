@@ -5,7 +5,7 @@ using photoContainer.data.models;
 public interface IImage
 {
 
-    Task<ActionResult<CarouselDto>> getCarouselData(int id);
+    Task<CarouselDto> getCarouselData(int id);
     Task<ImageDto[]> getAllImages();
     Task<ImageDto[]?> GetImagesByCategory(int categoryId);
     Task<ImageDto[]?> findImagesByUser(CategoryParams ip);
